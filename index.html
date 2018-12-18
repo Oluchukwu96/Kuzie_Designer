@@ -1,1 +1,357 @@
-<h1>What's up</h1>
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta charset="utf-8"/>
+    <Title>Kuzie Design</Title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel= "stylesheet" type="text/css" href="style.css">
+	<link rel= "stylesheet" type="text/css" href="menu.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+	<script src="vec.js"></script>
+	<script src="point.js"></script>
+	<script src="typewriter.js"></script>
+	<script src="constraints.js"></script>
+	<script src="line.js"></script>
+	<script src="curve.js"></script>
+	<script src="shape.js"></script>
+	<script src="welder.js"></script>
+	<script src="polygon.js"></script>
+	<script src="Collide.js"></script>
+	<script src="world.js"></script>
+	<script src="main.js"></script>
+ </head>
+  <body onload = "setup()">
+	<div id = "header">
+		<div id="top1">
+			<img src="img/logo.png" alt="My Logo">
+			<h1>Kuzie Design</h1>
+		</div>
+		<div id="top2">
+			<input title = "upload image" id="upload" class="inputfile" type="file"  accept="image/*" onchange = "upload()"></input>
+			<label title = "upload image" for="upload" id ="toplabel" class="topbtn"  ><i class="fa fa-upload"></i></label>
+			<button title = "save image" id = "download" class="topbtn" onclick="save()"><i class="fa fa-save"></i></button>
+			<div id = "settingdiv" style="float: left;" >
+			<button onclick="settingdrop()" title = "setting" class="topbtn"><i class="fa fa-cogs"></i>
+			</button>
+			<div id="setting" class="dropdown-content">
+				<center><h1>Setting</h1></center><br><br>
+				<label>
+				<input id = "transparent" class = "radio" name="snapping" type="checkbox"/checked>
+				<span>Transperant</span>
+				</label><br>
+				<label>
+				<input id = "snapping" class = "radio" name="snapping" type="radio"/checked>
+				<span>Snapping</span>
+				</label><br>
+				<label>
+				<input id = "snapgrid" class = "radio" name="snapping" type="radio"/>
+				<span>No Snapping</span>
+				</label><br>
+				<label>
+				<input id = "savepng" class = "radio" name="savetype" type="radio" /checked>
+				<span>Save as PNG</span>
+				</label><br>
+				<label>
+				<input id = "savejpg" class = "radio" name="savetype" type="radio" />
+				<span>Save as JPG</span>
+				</label><br>
+				<label>
+				<input id = "savesvg" class = "radio" name="savetype" type="radio" />
+				<span>Save as SVG</span>
+				</label><br>
+				<label>
+				<span>Background color</span>
+				<Input class="info" type="color" id="Bcolor" name="color1" value ="#ffffff">
+				</label><br>
+				<label>
+				<span>Grid Size</span>
+				<input id="gridsize" class="tbox dim" style="width: 30%;margin-left: 5px;" type="text" name="color1" value="10">
+				</label>
+			</div>
+			</div>
+			<button id = "donate" class="topbtn" onclick="run()">donate</button>
+		</div>
+	</div>
+	<div id = "header2">
+		<div class ="topbox">
+			<button onclick= "Undo()" title = "undo" class="tbtn"><i class="fa fa-undo"></i></button>
+			<button onclick= "Redo()"title = "redo" class="tbtn"><i class="fa fa-redo"></i></button>
+			<button id ="pan" title = "pan" onclick ="pan()" class="tbtn "><i class="fa fa-hand-paper"></i></button>
+			<button title = "grid" onclick ="togglegrid()" class="tbtn"><i class="fa fa-th"></i></button>
+		</div>
+		<div class ="topbox">
+			<button onclick ="mirrow()" style="padding-top:2px;"  title = "mirrow" class="tbtn">
+			<img src="img/mirrow.png" alt="My Logo">
+			</button>
+			<button onclick ="path()" style="padding-top:3px;"  title = "path pattern" class="tbtn">
+			<img src="img/pattern.png" alt="My Logo">
+			</button>
+			<button onclick ="revolve()" style="padding-top:3px;"  title = "revolve" class="tbtn">
+			<img src="img/revolve.png" alt="My Logo">
+			</button>
+			<button onclick = "Group()" style="padding-top:3px;"  title = "group" class="tbtn">
+			<img src="img/group.png" alt="My Logo">
+			</button>
+			<button onclick = "UnGroup()" style="padding-top:3px;"  title = "ungroup" class="tbtn">
+			<img src="img/ungroup.png" alt="My Logo">
+			</button>
+		</div>
+		<div class ="topbox">
+			<button style="padding-top:3px;"  title = "union" class="tbtn" onclick = "combine()">
+			<img src="img/union.png" alt="My Logo">
+			</button>
+			<button style="padding-top:3px;"  title = "subtract" class="tbtn" onclick = "subtract()">
+			<img src="img/subtract.png" alt="My Logo">
+			</button>
+			<button style="padding-top:3px;"  title = "intersect" class="tbtn" onclick="intersect()">
+			<img src="img/intersect.png" alt="My Logo">
+			</button>
+			<button style="padding-top:3px;"  title = "difference" class="tbtn">
+			<img src="img/difference.png" alt="My Logo">
+			</button>
+		</div>
+		<div class ="topbox">
+			<button title = "Zoom Out" id="zoomout" onclick =  "scaleup()" class="tbtn"><i class="fa fa-search-plus"></i></button>
+			<button title = "Zoom In" id="zoomin" onclick =  "scaledown()" class="tbtn"><i class="fa fa-search-minus"></i></button>
+			<button title = "Crop Image" class="tbtn"><i class="fa fa-image"></i></button>
+		</div>
+	</div>
+	<div style="clear:both;"></div>
+	<div id="middle">
+		<div id = "leftbar" class = "screen">
+			<button id ="default" title = "pointer" class="btn center selected" onclick = "Default()">
+			<i class="fa fa-mouse-pointer"></i>
+			</button>
+			<button id ="subselect" title = "Subselect" class="btn center" onclick ="subselect()">
+			.<i class="fa fa-mouse-pointer"></i>
+			</button>
+			<button id = "pen" title = "pen tool" class="btn center" onclick = "pencil()"><i class="fa fa-pen-nib"></i></button>
+			<button id="pencil" title = "pencil tool" class="btn center" onclick = "pen()"><i class="fa fa-pen"></i></button>
+			<button id="bezier" title = "bezier tool" class="btn center" onclick = "bezier()"><i class="fa fa-bezier-curve"></i></button>
+			<button title = "rectangle" class="btn center" onclick = "square()"><i class="fa fa-square"></i></button>
+			<button title = "ellipse" onclick = "veccircle()" class="btn center"><i class="fa fa-circle"></i></button>
+			<button title = "star" onclick = "star()" class="btn center"><i class="fa fa-star"></i></button>
+			<button title = "text" class="btn center" onclick = "gettext()">T</button>
+			<button title = "trim" class="btn center"><i class="fa fa-scissors" onclick="subtract()"></i></button>
+			<button id="picker" title = "color picker" class="btn center"><i class="fa fa-eye-dropper"></i></button>
+		</div>
+		<div id = "main" class="screen">
+			<canvas id="game" width="500" height="500" style="border:1px solid #007700;">
+				The game canvas can be viewed here
+			</canvas>
+		</div>
+		<div id = "rightbar" class="screen">
+			<div id="mirrowdiv" style="display:none">
+			<div class="contain">
+			<strong>Mirrow</strong>
+			</div>
+			<div class="inside">
+			<div class="medium" style="margin-left:6px;margin-top:2px;">Axis</div>
+			<input id="axis" class="tbox dim" style="width: 55%;margin-left: 5px;" type="text" name="color1" value=""><br>
+			<div class="medium" style="margin-left:6px;margin-top:2px;">Object</div>
+			<input id="mobject" class="tbox dim" style="width: 55%;margin-left: 5px;" type="text" name="color1" value=""><br>
+			<div class="medium" style="margin-left:6px;margin-top:2px;">Merge</div>
+			<input id="Mmerge" oninput = "preview()" style="margin-left:6px;margin-top:10px;" class="check" type="checkbox" name="ch1" value="ch" checked><br>
+			<button id = "mcancel" class="cbtn abtn" onclick ="cancel()">Cancel</button>
+			<button id = "mapply" class="abtn" onclick ="apply()">Apply</button>
+			</div>
+			</div>
+			<!-- next section -->
+			<div id="pathdiv" style="display:none">
+			<div class="contain">
+			<strong>Path Pattern</strong>
+			</div>
+			<div class="inside">
+			<div class="medium" style="margin-left:6px;margin-top:2px;">Path</div>
+			<input id="path" class="tbox dim" style="width: 55%;margin-left: 5px;" type="text" name="color1" value=""><br>
+			<div class="medium" style="margin-left:6px;margin-top:2px;">Object</div>
+			<input id="pobject" class="tbox dim" style="width: 55%;margin-left: 5px;" type="text" name="color1" value=""><br>
+			<div class="medium" style="margin-left:6px;margin-top:2px;">Number</div>
+			<input oninput = "preview()" id="pnumber" class="tbox dim" style="width: 55%;margin-left: 5px;" type="text" name="color1" value="1"><br>
+			<div class="medium" style="margin-left:6px;margin-top:2px;">Distance</div>
+			<input oninput = "preview()" id="pdistance" class="tbox dim" style="width: 55%;margin-left: 5px;" type="text" name="color1" value="5"><br>
+			<div class="medium" style="margin-left:6px;margin-top:2px;">Reverse</div>
+			<input oninput = "preview()" id="preverse" style="margin-left:6px;margin-top:10px;" class="check" type="checkbox" name="ch1" value="ch"><br>
+			<div class="medium" oninput = "preview()" style="margin-left:6px;margin-top:2px;">Merge</div>
+			<input id="pmerge" oninput = "preview()" style="margin-left:6px;margin-top:10px;" class="check" type="checkbox" name="ch1" value="ch" checked><br>
+			<button id = "pcancel" class="cbtn abtn" onclick ="cancel()">Cancel</button>
+			<button id = "papply" class="abtn" onclick ="apply()">Apply</button>
+			</div>
+			</div>
+			<!-- next section -->
+			<div id="revolvediv" style="display:none">
+			<div class="contain">
+			<strong>Revolve</strong>
+			</div>
+			<div class="inside">
+			<div class="medium" style="margin-left:6px;margin-top:2px;">Origin</div>
+			<input id="rorigin" class="tbox dim" style="width: 55%;margin-left: 5px;" type="text" name="color1" value="0 0"><br>
+			<div class="medium" style="margin-left:6px;margin-top:2px;">Object</div>
+			<input id="robject" class="tbox dim" style="width: 55%;margin-left: 5px;" type="text" name="color1" value=""><br>
+			<div class="medium" style="margin-left:6px;margin-top:2px;">Angle</div>
+			<input id="dangle" oninput = "preview()" class="tbox dim" style="width: 55%;margin-left: 5px;" type="text" name="color1" value="90"><br>
+			<div class="medium" style="margin-left:6px;margin-top:2px;">Revolve</div>
+			<input id="rangle" oninput = "preview()" class="tbox dim" style="width: 55%;margin-left: 5px;" type="text" name="color1" value="360"><br>
+			<div class="medium" style="margin-left:6px;margin-top:2px;">Reverse</div>
+			<input id="Rreverse" oninput = "preview()" style="margin-left:6px;margin-top:10px;" class="check" type="checkbox" name="ch1" value="ch"><br>
+			<div class="medium" style="margin-left:6px;margin-top:2px;">Merge</div>
+			<input id="rmerge" oninput = "preview()" style="margin-left:6px;margin-top:10px;" class="check" type="checkbox" name="ch1" value="ch" checked><br>
+			<button id = "rcancel" class="cbtn abtn" onclick ="cancel()">Cancel</button>
+			<button id = "rapply" class="abtn" onclick ="apply()">Apply</button>
+			</div>
+			</div>
+			<div id="properties">
+			<!-- next section -->
+			<div id="fontdiv">
+			<div class="contain">
+			<strong>Font</strong>
+			</div>
+			<div class="inside">
+			<div class ="dropdown" style="width: 80%;margin-left: 5px;">
+			<button id = "fontbtn" class="dbox tbox" onclick="fontdrop()">
+			Arial <i class="fa fa-caret-down"></i>
+			</button>
+			<div id="fontdown" class="dropdown-content">
+			
+			</div>
+			</div><br>
+			<div class="small" style="margin-left:5px;">Font </div><br>
+			<div>
+				<input id = "fontsize" class = "op opacity" type="range" min="0" max="100" value="25" oninput ="setfontsize()">
+				<input id="fontshow" onfocus="this.select();" style="width:40px;" class="tbox dim shadow" type="text" name="color1" value="25px">
+				<div class="small" style="margin-left:5px;">Font Size</div>
+			</div>
+			</div>
+			</div>
+			<!-- next section -->
+			<div id="backgrounddiv">
+			<div class="contain">
+			<strong>Fill</strong>
+			</div>
+			<div class="inside">
+			<div>
+			<Input class="info" type="color" id="fc" name="color1" value ="#4283ed" oninput = "setcolor()">
+			<input id="fcshow" onfocus="this.select();" class="tbox" type="text" name="color1" value="#4283ed">
+			</div>
+			<div>
+				<div class="small" style="margin-left:5px;">Color</div>
+			</div><br>
+			<div>
+				<input id = "op" class = "op opacity" type="range" min="0" max="100" value="100" oninput ="setopacity()">
+				<input id="opshow" onfocus="this.select();" style="width:40px;" class="tbox dim shadow" type="text" name="color1" value="100%"><br>
+				<div class="small" style="margin-left:5px;">Opacity</div>
+			</div><br>
+			<div>
+				<input id = "radius" class = "op opacity" type="range" min="0" max="100" value="0" oninput ="setopacity()">
+				<input id="radiusshow" onfocus="this.select();" style="width:40px;" class="tbox dim shadow" type="text" name="color1" value="0px"><br>
+				<div class="small" style="margin-left:5px;">Border-radius</div>
+				
+			</div>
+			</div>
+			</div>
+			<!-- next section -->
+			<div id="borderdiv" style="display: block;">
+			<div class="contain">
+			<strong>Border</strong>
+			</div>
+			<div class="inside">
+			<div>
+			<Input class="info" type="color" id="fc2" name="color1" value ="#000000" oninput = "setcolor2()">
+			<input id="fcshow2" onfocus="this.select();" class="tbox" type="text" name="color1" value="#000000">
+			</div>
+			<div>
+				<div class="small" style="margin-left:5px;">Color</div>
+			</div>
+			<br>
+			<div>
+				<input id = "op2" class = "op opacity" type="range" min="0" max="100" value="100" oninput ="setopacity2()">
+				<input id="opshow2" onfocus="this.select();" style="width:40px;" class="tbox dim shadow" type="text" name="color1" value="100%"><br>
+				<div class="small" style="margin-left:5px;">Opacity</div>
+			</div>
+			<br>
+			<div>
+				<input id = "size" class = "op opacity" type="range" min="0" max="50" value="1" oninput ="setsize()">
+				<input id="sizeshow" onfocus="this.select();" style="width:40px;" class="tbox dim shadow" type="text" name="color1" value="0px"><br>
+				<div class="small" style="margin-left:5px;">Size</div>
+			</div>
+			</div>
+			</div>
+			<!-- next section -->
+			<div id="dimdiv">
+			<div class="contain">
+			<strong>Dimensions</strong>
+			</div>
+			<div class="inside">
+				<!-- lengths -->
+				<input id="width" onfocus="this.select();" class="tbox dim" style="width: 40%;margin-left: 5px;" type="text" name="color1" value="0px">
+				<input id="height" onfocus="this.select();" class="tbox dim" style="width: 40%;margin-left: 15px;" type="text" name="color1" value="0px">
+				<div class="small" style="margin-left:6px;">Width</div>
+				<div class="small" style="margin-left:35%;">Height</div>
+				<!-- positions -->
+				<input id="x" onfocus="this.select();" class="tbox dim" style="width: 28%; margin-left: 5px;" type="text" name="color1" value="0px">
+				<input id="y" onfocus="this.select();" class="tbox dim" style="width: 28%; margin-left: 5px;" type="text" name="color1" value="0px">
+				<input id="rotation" onfocus="this.select();" class="tbox dim" style="width: 28%; margin-left: 5px;" type="text" name="color1" value="0">
+				<div class="small" style="margin-left:6px;">X</div>
+				<div class="small" style="margin-left:29%;">Y</div>
+				<div class="small" style="margin-left:29%;">Rotation</div>
+			</div>
+			</div>
+			<!-- next section -->
+			<div id="shadowdiv">
+			<div class="contain">
+			<strong>Shadow</strong>
+			</div>
+			<div class="inside">
+				<input class="info" type="color" id="fc2" name=color1" value ="#000000" onchange = "setshadow()">
+				<input id="offx" onfocus="this.select();" class="tbox dim shadow" type="text" name="color1" value="0px">
+				<input id="offy" onfocus="this.select();" class="tbox dim shadow" type="text" name="color1" value="0px">
+				<input id="blur" onfocus="this.select();" class="tbox dim shadow" type="text" name="color1" value="0px">
+				<input id="spread" onfocus="this.select();" class="tbox dim shadow" type="text" name="color1" value="0px">
+				<div class="tiny" style="margin-left:21%;">Offset X</div>
+				<div class="tiny" style="margin-left:5%;">Offset Y</div>
+				<div class="tiny" style="margin-left:5%;">Blur</div>
+				<div class="tiny" style="margin-left:12%;">Spread</div>
+			</div>
+			</div>
+		</div>
+		</div>
+	</div>
+	<menu id="ctxMenu">
+		<menu title="File">
+			<menu title="Save"></menu>
+			<menu title="Save As"></menu>
+			<menu title="Open"></menu>
+		</menu>
+		<menu title="Edit">
+			<menu title="Cut"></menu>
+			<menu title="Copy"></menu>
+			<menu title="Paste"></menu>
+		</menu>
+	</menu>
+	<div id="backSelect" class="select">
+		<div id="selectall" onclick = "SelectAll()" class="sbtn" title="Select all"></div>
+		<div id="copyall" onclick="CopyAll()" class="sbtn" title="Copy all"></div>
+		<div id="cutall" onclick="CutAll()" class="sbtn" title="Cut all"></div>
+		<div id="clearall" onclick = "DeleteAll()" class="sbtn" title="Clear all"></div>
+		<div id="paste" onclick= "Paste()" class="sbtn" title="Paste"></div>
+		<div id="undo" onclick= "Undo()" class="sbtn" title="Undo"></div>
+		<div id="unlockall" onclick="Unlockall()" class="sbtn" title="Unlock all"></div>
+	</div>
+	<div id="shapeSelect" class="select">
+		<div id="back" onclick= "SendBack()" class="sbtn" title="Send to Back"></div>
+		<div id="front" onclick= "SendFront()" class="sbtn" title="Send to Front"></div>
+		<div id="backwards" onclick= "SendBackward()" class="sbtn" title="Send Backwards"></div>
+		<div id="forwards" onclick= "SendForward()" class="sbtn" title="Send Forwards"></div>
+		<div id="cut" onclick= "Cut()" class="sbtn" title="Cut"></div>
+		<div id="copy" onclick= "Copy()" class="sbtn" title="Copy"></div>
+		<div id="paste" onclick= "Paste()" class="sbtn" title="Paste"></div>
+		<div id="duplicate" onclick = "Duplicate()" class="sbtn" title="Duplicate"></div>
+		<div id="delete" onclick ="Delete()" class="sbtn" title="Delete"></div>
+		<div id="lock" onclick ="Lock()" class="sbtn" title="Lock"></div>
+		<div id="download" onclick ="Download()" class="sbtn" title="Download"></div>
+	</div>
+  </body>
+</html>
+
