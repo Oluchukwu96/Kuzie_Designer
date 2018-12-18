@@ -1,0 +1,133 @@
+
+
+#backSelect{
+	display:none;
+    z-index:100;
+}
+#shapeSelect{
+	display:none;
+    z-index:100;
+}
+#ctxMenu{
+    display:none;
+    z-index:100;
+}
+.dropdown {
+	/*width: 50%;*/
+	margin-top: 4px;
+	padding-top: 0;
+	margin-bottom: 4px;
+    position: relative;
+    display: inline-block;
+	/*background: blue;*/
+}
+#setting{
+	padding-top: 5px;
+	padding-left: 5px;
+	padding-bottom: 5px;
+	margin-top:33px;
+	margin-left: -115px;
+	z-index: 100;
+	/*background-color: #2c2d2d;*/
+	background-color: #686a6d;
+	color: white;
+	font-family: Georgia;
+	border: 1px solid black;
+	outline-style:none;
+}
+#setting label:hover{
+	background: #929599;
+}
+#setting label{
+	width: 100%;
+}
+.radio{
+	margin:0;
+	padding: 0;
+	border: 0;
+	margin-top: -2px;
+	width: 15px;
+	height: 15px;
+	vertical-align:middle;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 5px 7px;
+    text-decoration: none;
+    display: block;
+}
+.dropdown a:hover {
+	background-color: #ddd;
+}
+.show {display: block;}
+a{
+	cursor: pointer;
+}
+.select{
+	overflow:auto;
+	position:absolute;
+	left:0px;
+    top:0px;
+	height:auto;
+    width:150px;
+    padding:0;
+    margin:0;
+}
+.sbtn{
+	width:auto;
+	background-color:white;
+	padding: 5px;
+}
+.sbtn:hover{
+	background-color:#bcc4c4;
+}
+.sbtn[title]:before{
+    content:attr(title);
+}
+.sbtn:not([title]):before{
+    content:"\2630";
+}
+menu {
+    position:absolute;
+    display:block;
+    left:0px;
+    top:0px;
+    height:20px;
+    width:20px;
+    padding:0;
+    margin:0;
+    border:1px solid;
+    background-color:white;
+    font-weight:normal;
+    white-space:nowrap;
+}
+menu:hover{
+    background-color:#eef;
+    font-weight:bold;
+}
+menu:hover > menu{
+    display:block;
+}
+menu > menu{
+    display:none;
+    position:relative;
+    top:-20px;
+    left:100%;
+    width:55px;
+}
+menu[title]:before{
+    content:attr(title);
+}
+menu:not([title]):before{
+    content:"\2630";
+}
