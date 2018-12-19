@@ -241,15 +241,6 @@ function point(x,y,base=null){
 		ans.hlock = this.hlock;
 		ans.ishandle = this.ishandle;
 		this.lastcopy = ans;
-		//transfer handles
-		var h1 = this.geth1();
-		if(h1!=null){
-			ans.saveh1= h1;
-		}
-		var h2 = this.geth2();
-		if(h2!=null){
-			ans.saveh2= h2;
-		}
 		//this.copyconstraint(); //make sure all constraints are copied
 		return ans;
 	}
